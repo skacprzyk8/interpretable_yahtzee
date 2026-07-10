@@ -1,18 +1,4 @@
 # DAGGER TRAINING EXPERIMENT FOR YAHTZEE DECISION TREES (FIXED + DUAL FALLBACK RUN)
-# ---------------------------------------------------------------------------
-# Key fixes:
-#   * All missing helper functions added: is_yahtzee, _turn_idx_from_avail, _subtree_for_turn, _is_three_state
-#   * Added missing constants: CATEGORY_NAMES, CAT_NAME_TO_IDX
-#   * Fixed function names: _fallback_cat -> fallback_cat
-#   * Fixed prepare_features to return consistent 1D arrays (removed reshape in build_feature_vector)
-#   * Evaluation now uses identical logic to working simulation
-#   * Seeded, paired evaluation for reproducibility
-#   * EXPERT MODE: beta=1.0 uses pure expert (no tree, no fallbacks)
-#   * PLOTS: BC baseline REMOVED entirely from plots and data passed to plotting
-#   * RUNS TWICE: once with FALLBACK_MODE='greedy', once with FALLBACK_MODE='random'
-#     -> produces dagger_results_greedy.png and dagger_results_random.png
-#   * Global SEED fixes numpy/torch RNGs so repeated runs are reproducible
-# ---------------------------------------------------------------------------
 
 # CONFIGURATION
 SRC_PATH        = r'C:\Users\Szymon\Desktop\Thesis_use_this\case-studies-final-project'
@@ -85,9 +71,9 @@ from yahtzee_agent.trainer import Algorithm
 
 print("Imports OK")
 
-# ─────────────────────────────────────────────────────────────────────────────
+
 # CATEGORY NAMES AND MAPPING
-# ─────────────────────────────────────────────────────────────────────────────
+
 CATEGORY_NAMES = [
     'Ones', 'Twos', 'Threes', 'Fours', 'Fives', 'Sixes',
     '3-Kind', '4-Kind', 'Full House', 'S-Straight', 'L-Straight', 'Yahtzee', 'Chance'
@@ -106,9 +92,9 @@ SIM_TO_PAPE = {
     'Yahtzee': 'Yahtzee', 'Chance': 'Chance'}
 PAPE_TO_SIM = {v: k for k, v in SIM_TO_PAPE.items()}
 
-# ─────────────────────────────────────────────────────────────────────────────
+
 # HELPER FUNCTIONS
-# ─────────────────────────────────────────────────────────────────────────────
+
 def is_yahtzee(dice_row):
     """Check if all dice are the same."""
     return len(set(int(d) for d in dice_row)) == 1
@@ -129,9 +115,9 @@ def _turn_idx_from_avail(avail_row):
     """0-based turn index = number of categories already filled (0..12)."""
     return 13 - int(round(float(np.sum(avail_row))))
 
-# ─────────────────────────────────────────────────────────────────────────────
+
 # DATA LOADING + FEATURE ENGINEERING
-# ─────────────────────────────────────────────────────────────────────────────
+
 def dice_decision_to_class(row):
     binary_str = ''.join(
         [str(int(row[col])) for col in
@@ -211,9 +197,9 @@ complex_model_rich_exp2 = DecisionTreeClassifier(max_depth=SCORE_DEPTH, random_s
 complex_model_rich_exp2.fit(X_train_rich_exp2, y_train_rich_exp2)
 print(f"Seed scoring tree trained (depth {SCORE_DEPTH}): {len(X_train_rich_exp2):,} samples")
 
-# ─────────────────────────────────────────────────────────────────────────────
+
 # EXPERT MODEL
-# ─────────────────────────────────────────────────────────────────────────────
+
 torch.serialization.add_safe_globals([Algorithm])
 checkpoint = torch.load(CHECKPOINT_PATH, map_location='cpu')
 hparams    = checkpoint['hyper_parameters']
