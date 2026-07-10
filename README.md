@@ -28,3 +28,8 @@ Make sure the contents of `case-studies-final-project` sit alongside the files i
 > **Note:** Some files use hardcoded local paths. Update these paths to match your local environment before running the notebooks or scripts.
 
 For full details and results, see the thesis associated with this work also included in this repository.
+## References
+
+This work builds on the A2C expert agent introduced in:
+
+Pape, N. A. (2025). *Yahtzee: Reinforcement Learning Techniques for Stochastic Combinatorial Games*. arXiv (Cornell University). https://doi.org/10.48550/arxiv.2601.00007
